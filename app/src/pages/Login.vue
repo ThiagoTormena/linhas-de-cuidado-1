@@ -55,18 +55,19 @@
 import api from '../services/api';
 
 export default {
-  name: "Login",
+  name: 'Login',
   methods: {
-    async authenticate() {
+    async authenticate(req) {
       const { email, password } = req.body;
 
-      let res = await api.post("/login", { email, password });
+      const res = await api.post('/login', { email, password });
       try {
         api.defaults.headers.common.Authorization = res.data.token;
-        res.sendStatus(200).send("Auth successfull");
+        res.sendStatus(200).send('Auth successfull');
         this.$router.push('/');
       } catch (err) {
-        if (err) this.$router.push('/login');;
+        if (err) this.$router.push('/login');
+        // to-do warning alert
       }
     },
   },
