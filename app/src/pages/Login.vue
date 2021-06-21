@@ -3,7 +3,9 @@
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
         <v-card elevation="4" class="login-card">
-          <v-card-title class="primary white--text justify-center">Login</v-card-title>
+          <v-card-title class="primary white--text justify-center"
+            >Login</v-card-title
+          >
           <v-card-text>
             <v-container>
               <form>
@@ -35,7 +37,9 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex xs12>
-                    <v-btn class="primary white--text" type="submit">Entrar</v-btn>
+                    <v-btn class="primary white--text" type="submit"
+                      >Entrar</v-btn
+                    >
                   </v-flex>
                 </v-layout>
               </form>
@@ -48,7 +52,25 @@
 </template>
 
 <script>
+import api from '../services/api';
 
+export default {
+  name: "Login",
+  methods: {
+    async authenticate() {
+      const { email, password } = req.body;
+
+      let res = await api.post("/login", { email, password });
+      try {
+        api.defaults.headers.common.Authorization = res.data.token;
+        res.sendStatus(200).send("Auth successfull");
+        this.$router.push('/');
+      } catch (err) {
+        if (err) this.$router.push('/login');;
+      }
+    },
+  },
+};
 </script>
 <style>
 
