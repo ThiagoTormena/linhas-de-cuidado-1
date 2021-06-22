@@ -8,14 +8,16 @@
           >
           <v-card-text>
             <v-container>
-              <form>
                 <v-layout row>
                   <v-flex xs12>
                     <v-text-field
                       class="text"
                       name="user"
                       label="Usuário"
+<<<<<<< HEAD
                       id="user"
+=======
+>>>>>>> 4ad31a483ed6a25b3d702e4fb326f99449ef34c4
                       v-model="input.username"
                       type="user"
                       required
@@ -38,13 +40,12 @@
                 <v-layout row>
                   <v-flex xs12>
                     <v-btn
-                      v-on:click="authenticate()"
                       class="primary white--text"
-                     >Entrar</v-btn
+                      v-on:click="authenticate()"
+                      >Entrar</v-btn
                     >
                   </v-flex>
                 </v-layout>
-              </form>
             </v-container>
           </v-card-text>
         </v-card>
@@ -66,6 +67,14 @@ export default {
     };
   },
   name: 'Login',
+  data() {
+    return {
+      input: {
+        username: '',
+        password: '',
+      },
+    };
+  },
   methods: {
     async authenticate() {
       const res = await api.post('/auth/authenticate', {
@@ -77,8 +86,8 @@ export default {
 
         this.$router.push('/');
       } catch (err) {
-        if (err) this.$router.push('/login');
         // to-do warning alert
+        if (err) this.$router.push('/login');
       }
     },
   },
