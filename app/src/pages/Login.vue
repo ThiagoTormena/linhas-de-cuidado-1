@@ -16,7 +16,7 @@
                       name="user"
                       label="Usuário"
                       id="user"
-                      v-model="user"
+                      v-model="input.username"
                       type="user"
                       required
                     ></v-text-field>
@@ -29,7 +29,7 @@
                       name="password"
                       label="Senha"
                       id="password"
-                      v-model="password"
+                      v-model="input.password"
                       type="password"
                       required
                     ></v-text-field>
@@ -37,8 +37,10 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex xs12>
-                    <v-btn class="primary white--text" type="submit"
-                      >Entrar</v-btn
+                    <v-btn
+                      v-on:click="authenticate()"
+                      class="primary white--text"
+                     >Entrar</v-btn
                     >
                   </v-flex>
                 </v-layout>
@@ -55,15 +57,24 @@
 import api from '../services/api';
 
 export default {
+  data() {
+    return {
+      input: {
+        username: '',
+        password: '',
+      },
+    };
+  },
   name: 'Login',
   methods: {
-    async authenticate(req) {
-      const { email, password } = req.body;
-
-      const res = await api.post('/login', { email, password });
+    async authenticate() {
+      const res = await api.post('/auth/authenticate', {
+        email: this.input.username,
+        password: this.input.password,
+      });
       try {
         api.defaults.headers.common.Authorization = res.data.token;
-        res.sendStatus(200).send('Auth successfull');
+
         this.$router.push('/');
       } catch (err) {
         if (err) this.$router.push('/login');
@@ -74,5 +85,4 @@ export default {
 };
 </script>
 <style>
-
 </style>
